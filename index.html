@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="./images/TheFavicon.png">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="icon" href="./assets/images/TheFavicon.png">
+  <link rel="stylesheet" href="assets/styles/styles.css">
   <title>Photon Laser II</title>
 </head>
 <body>
@@ -13,6 +16,11 @@
     <span>Score: 
       <span id="score-el">0</span>
     </span>
+  </div>
+
+  <div class="volume-wrapper">
+    <i class="fa-solid fa-volume-high"></i>
+    <i class="fa-solid fa-volume-low"></i>
   </div>
   
   <div id="modal-el">
@@ -32,7 +40,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
     integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="script.js"></script>
+  <script src="index.js" type="module"></script>
   
 </body>
 </html>
