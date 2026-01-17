@@ -1,11 +1,9 @@
 const canvas = document.querySelector('canvas')
-const ctx = canvas.getContext('2d')
+const c = canvas.getContext('2d')
 const scoreEl = document.querySelector('#score-el')
 const modalEl = document.querySelector('#modal-el')
 const modalScoreEl = document.querySelector('#modal-score-el')
 const buttonEl = document.querySelector('#button-el')
-const startButtonEl = document.querySelector('#start-button-el')
-const startModalEl = document.querySelector('#start-modal-el')
 
 canvas.width = innerWidth
 canvas.height = innerHeight
@@ -18,10 +16,10 @@ class Player {
     this.colour = colour
   }
   draw() {
-    ctx.beginPath()
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-    ctx.fillStyle = this.colour
-    ctx.fill()
+    c.beginPath()
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    c.fillStyle = this.colour
+    c.fill()
   }
 }
 
@@ -34,10 +32,10 @@ class Projectile {
     this.velocity = velocity
   }
   draw() {
-    ctx.beginPath()
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-    ctx.fillStyle = this.colour
-    ctx.fill()
+    c.beginPath()
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    c.fillStyle = this.colour
+    c.fill()
   }
   update() {
     this.draw()
@@ -55,10 +53,10 @@ class Enemy {
     this.velocity = velocity
   }
   draw() {
-    ctx.beginPath()
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-    ctx.fillStyle = this.colour
-    ctx.fill()
+    c.beginPath()
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    c.fillStyle = this.colour
+    c.fill()
   }
   update() {
     this.draw()
@@ -79,13 +77,13 @@ class Particle {
     this.alpha = 1
   }
   draw() {
-    ctx.save()
-    ctx.globalAlpha = this.alpha 
-    ctx.beginPath()
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-    ctx.fillStyle = this.colour
-    ctx.fill()
-    ctx.restore()
+    c.save()
+    c.globalAlpha = this.alpha 
+    c.beginPath()
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    c.fillStyle = this.colour
+    c.fill()
+    c.restore()
   }
   update() {
     this.draw()
@@ -115,7 +113,6 @@ function init() {
   particles = []
   animationId
   score = 0
-  scoreEl.innerHTML = 0
 }
 
 function spawnEnemies() {
@@ -144,8 +141,8 @@ function spawnEnemies() {
 
 function animate() {
   animationId = requestAnimationFrame(animate)
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.1'
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  c.fillStyle = 'rgba(0, 0, 0, 0.1'
+  c.fillRect(0, 0, canvas.width, canvas.height)
   
   player.draw()
 
@@ -178,20 +175,8 @@ function animate() {
     if (dist - enemy.radius - player.radius < 1) {
       cancelAnimationFrame(animationId)
       clearInterval(intervalId)
-
-      modalEl.style.display = 'block'
-      gsap.fromTo(
-        '#modalEl',
-        {
-          scale: 0.8,
-          opacity: 0
-        },
-        {
-          scale: 1,
-          opacity: 1,
-          ease: 'expo'
-        }
-      )
+      modalEl.style.visibility = 'visible'
+      modalEl.style.opacity = 1
       modalScoreEl.innerHTML = score
     }
 
@@ -225,7 +210,7 @@ function animate() {
           })
           projectiles.splice(projectilesIndex, 1)
         } else {
-          score += 150
+          score += 10
           scoreEl.innerHTML = score
           enemies.splice(index, 1)
           projectiles.splice(projectilesIndex, 1)
@@ -245,13 +230,7 @@ addEventListener('click', (event) => {
     y: Math.sin(angle) * 5
   }
   projectiles.push(
-    new Projectile(
-      canvas.width / 2,
-      canvas.height / 2,
-      5,
-      '#ffd700',
-      velocity
-    )
+    new Projectile(canvas.width / 2, canvas.height / 2, 5, '#ffd700', velocity)
   )
 }) 
 
@@ -259,29 +238,9 @@ buttonEl.addEventListener('click', () => {
   init()
   animate()
   spawnEnemies()  
-  gsap.to('#modalEl', {
-    opacity: 0,
-    scale: 0.8,
-    duration: 0.2,
-    ease: 'expo.in',
-    onComplete: () => {
-      modalEl.style.display = 'none'
-    }
-  })
+  modalEl.style.visibility = 'hidden'
+  modalEl.style.opacity = 0
 })
 
-startButtonEl.addEventListener('click', () => {
-  init()
-  animate()
-  spawnEnemies()
-  gsap.to('#startModalEl', {
-    opacity: 0,
-    scale: 0.8,
-    duration: 0.2,
-    ease: 'expo.in',
-    onComplete: () => {
-      startModalEl.style.display = 'none'
-    }
-  })
-})
-
+animate()
+spawnEnemies()

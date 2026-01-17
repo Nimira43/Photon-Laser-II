@@ -3,36 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="./images/TheFavicon.png">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="images/billy.png">
+  <link rel="stylesheet" href="style.css">
   <title>Photon Laser II</title>
 </head>
 <body>
-  
-  <div class="score-wrapper">
-    <span>Score: 
-      <span id="score-el">0</span>
-    </span>
+  <div class="title">
+    <span>Photon Laser II</span>
   </div>
-  
-  <div id="modal-el">
+  <div class="points">
+    <span><span id="score-el">0</span> points</span>
+  </div>
+  <div id="modal-el" class="modal-el">
     <label class="game-over">You Are Dead</label>
-    <h1 id="modal-score-el">0</h1>
-    <p class="points">Points</p>
-    <button id="button-el">Try Again?</button>
+    <h1 id="modal-score-el" class="modal-score-el">0</h1>
+    <p class="final-points">Points</p>
+    <button id="button-el" class="button-el">Try Again?</button>
   </div>
-
-  <div id="start-modal-el">
-    <h1 class="title">Photon Laser II</h1>
-    <button id="start-button-el">Start</button>
-  </div>
-
   <canvas></canvas>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
     integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="script.js"></script>
-  
 </body>
 </html>

@@ -1,5 +1,5 @@
 const canvas = document.querySelector('canvas')
-const ctx = canvas.getContext('2d')
+const c = canvas.getContext('2d')
 const scoreEl = document.querySelector('#score-el')
 const modalEl = document.querySelector('#modal-el')
 const modalScoreEl = document.querySelector('#modal-score-el')
@@ -18,10 +18,10 @@ class Player {
     this.colour = colour
   }
   draw() {
-    ctx.beginPath()
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-    ctx.fillStyle = this.colour
-    ctx.fill()
+    c.beginPath()
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    c.fillStyle = this.colour
+    c.fill()
   }
 }
 
@@ -34,10 +34,10 @@ class Projectile {
     this.velocity = velocity
   }
   draw() {
-    ctx.beginPath()
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-    ctx.fillStyle = this.colour
-    ctx.fill()
+    c.beginPath()
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    c.fillStyle = this.colour
+    c.fill()
   }
   update() {
     this.draw()
@@ -55,10 +55,10 @@ class Enemy {
     this.velocity = velocity
   }
   draw() {
-    ctx.beginPath()
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-    ctx.fillStyle = this.colour
-    ctx.fill()
+    c.beginPath()
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    c.fillStyle = this.colour
+    c.fill()
   }
   update() {
     this.draw()
@@ -79,13 +79,13 @@ class Particle {
     this.alpha = 1
   }
   draw() {
-    ctx.save()
-    ctx.globalAlpha = this.alpha 
-    ctx.beginPath()
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-    ctx.fillStyle = this.colour
-    ctx.fill()
-    ctx.restore()
+    c.save()
+    c.globalAlpha = this.alpha 
+    c.beginPath()
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    c.fillStyle = this.colour
+    c.fill()
+    c.restore()
   }
   update() {
     this.draw()
@@ -144,8 +144,8 @@ function spawnEnemies() {
 
 function animate() {
   animationId = requestAnimationFrame(animate)
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.1'
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  c.fillStyle = 'rgba(0, 0, 0, 0.1'
+  c.fillRect(0, 0, canvas.width, canvas.height)
   
   player.draw()
 
