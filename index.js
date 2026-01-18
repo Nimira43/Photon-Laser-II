@@ -1,11 +1,18 @@
-import { Player, Projectile, Enemy, Particle, BackgroundParticle, PowerUp} from './js/classes.js'
-import { ctx, canvas, scoreEl, modalEl, modalScoreEl, buttonEl, startButtonEl, startModalEl, player } from './js/variables.js'
+const canvas = document.querySelector('canvas')
+const ctx = canvas.getContext('2d')
+const scoreEl = document.querySelector('#score-el')
+const modalEl = document.querySelector('#modal-el')
+const modalScoreEl = document.querySelector('#modal-score-el')
+const buttonEl = document.querySelector('#button-el')
+const startButtonEl = document.querySelector('#start-button-el')
+const startModalEl = document.querySelector('#start-modal-el')
+const volumeUpEl = document.querySelector('#volume-up-el')
+const volumeOffEl = document.querySelector('#volume-off-el')
 
 canvas.width = innerWidth
 canvas.height = innerHeight
-const x = canvas.width / 2
-const y = canvas.height / 2
 
+let player
 let projectiles = []
 let enemies = []
 let particles = []
@@ -27,7 +34,6 @@ function init() {
   enemies = []
   particles = []
   powerUps = []
-  animationId
   score = 0
   scoreEl.innerHTML = 0
   frames = 0
@@ -166,9 +172,10 @@ function animate() {
 
     if (powerUp.position.x > canvas.width) {
       powerUps.splice(i, 1)
-    } else powerUp.update()
+    } else {
+      powerUp.update()
+    }
   
-
     const dist = Math.hypot(
       player.x - powerUp.position.x,
       player.y - powerUp.position.y
@@ -189,17 +196,17 @@ function animate() {
 
   if (player.powerUp === 'MachineGun') {
     const angle = Math.atan2(
-      MouseEvent.position.y - player.y,
-      MouseEvent.position.x - player.x
+      mouse.position.y - player.y,
+      mouse.position.x - player.x
     )
     const velocity = {
       x: Math.cos(angle) * 5,
-      x: Math.sin(angle) * 5,
+      y: Math.sin(angle) * 5,
     }
 
     if (frames % 2 === 0) {
       projectiles.push(
-        new Projectile(player.x, player.y, 'yellow', velocity)
+        new Projectile(player.x, player.y, 5, 'yellow', velocity)
       )
     }
 
@@ -219,7 +226,6 @@ function animate() {
   }
 
   for (let index = projectiles.length - 1; index >= 0; index--) {
-  
     const projectile = projectiles[index]
     projectile.update()
 
@@ -303,8 +309,8 @@ function animate() {
 
           createScoreLabel({
             position: {
-              x: position.x,
-              y: position.y,
+              x: projectile.x,
+              y: projectile.y,
             },
             score: 100
           })
@@ -317,8 +323,8 @@ function animate() {
 
           createScoreLabel({
             position: {
-              x: position.x,
-              y: position.y,
+              x: projectile.x,
+              y: projectile.y,
             },
             score: 150
           })
@@ -378,8 +384,8 @@ window.addEventListener('click', (event) => {
 window.addEventListener('touchstart', (event) => {
   const x = event.touches[0].clientX
   const y = event.touches[0].clientY
-  MouseEvent.position.x = event.touches[0].clientX
-  MouseEvent.position.y = event.touches[0].clientY
+  mouse.position.x = x
+  mouse.position.y = y
   shoot({ x, y })
 })
 
@@ -394,11 +400,11 @@ addEventListener('mousemove', (event) => {
   mouse.position.x = event.clientX
   mouse.position.y = event.clientY
 })
+
 addEventListener('touchmove', (event) => {
   mouse.position.x = event.touches[0].clientX
   mouse.position.y = event.touches[0].clientY
 })
-
 
 buttonEl.addEventListener('click', () => {
   audio.select.play()
@@ -434,7 +440,7 @@ startButtonEl.addEventListener('click', () => {
   })
 })
 
-volumeUpEl.addEventlistener('click', () => {
+volumeUpEl.addEventListener('click', () => {
   audio.background.pause()
   volumeOffEl.style.display = 'block'
   volumeUpEl.style.display = 'none'
@@ -444,7 +450,7 @@ volumeUpEl.addEventlistener('click', () => {
   }
 })
 
-volumeOffEl.addEventlistener('click', () => {
+volumeOffEl.addEventListener('click', () => {
   if (audioInitialised) audio.background.play()
   volumeOffEl.style.display = 'none'
   volumeUpEl.style.display = 'block'

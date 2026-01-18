@@ -1,6 +1,4 @@
-import { ctx, friction, player } from './variables.js'
-
-export class Player {
+class Player {
   constructor(x, y, radius, colour) {
     this.x = x
     this.y = y
@@ -10,7 +8,7 @@ export class Player {
       x: 0,
       y: 0
     }
-    this.powerUp
+    this.powerUp = null
   }
   
   draw() {
@@ -46,7 +44,7 @@ export class Player {
   } 
 }
 
-export class Projectile {
+class Projectile {
   constructor(x, y, radius, colour, velocity) {
     this.x = x
     this.y = y
@@ -64,12 +62,12 @@ export class Projectile {
 
   update() {
     this.draw()
-    this.x = this.x + this.velocity.x
-    this.y = this.y + this.velocity.y
+    this.x += this.velocity.x
+    this.y += this.velocity.y
   }
 }
 
-export class Enemy {
+class Enemy {
   constructor(x, y, radius, colour, velocity) {
     this.x = x
     this.y = y
@@ -77,7 +75,7 @@ export class Enemy {
     this.colour = colour
     this.velocity = velocity
     this.type = 'Linear'
-    this.radius = 0
+    this.radians = 0
     this.centre = { x, y }
 
     if (Math.random() < 0.5) {
@@ -97,52 +95,47 @@ export class Enemy {
     ctx.fillStyle = this.colour
     ctx.fill()
   }
+
   update() {
     this.draw()
 
-    if (this.type = 'Spinning') {
+    if (this.type === 'Spinning') {
       this.radians += 0.1
       this.centre.x += this.velocity.x
       this.centre.y += this.velocity.y
 
       this.x = this.centre.x + Math.cos(this.radians) * 30
-      this.x = this.centre.y + Math.sin(this.radians) * 30
+      this.y = this.centre.y + Math.sin(this.radians) * 30
 
     } else if (this.type === 'Homing') {
-      
-      const angle = Math.atan2(
-        player.y - this.y,
-        player.x - this.x
-      )
-      
+      const angle = Math.atan2(player.y - this.y, player.x - this.x)
       this.velocity.x = Math.cos(angle)
-      this.velocity.y = Math.sin(angle) 
-      this.x = this.x + this.velocity.x
-      this.y = this.y + this.velocity.y
+      this.velocity.y = Math.sin(angle)
+      this.x += this.velocity.x
+      this.y += this.velocity.y
 
     } else if (this.type === 'Homing Spinning') {
       this.radians += 0.1
 
-      const angle = Math.atan2(
-        player.y - this.centre.y,
-        player.x - this.centre.x
-      )
-
+      const angle = Math.atan2(player.y - this.centre.y, player.x - this.centre.x)
       this.velocity.x = Math.cos(angle)
-      this.velocity.y = Math.sin(angle) 
+      this.velocity.y = Math.sin(angle)
       this.centre.x += this.velocity.x
       this.centre.y += this.velocity.y
 
       this.x = this.centre.x + Math.cos(this.radians) * 30
-      this.x = this.centre.y + Math.sin(this.radians) * 30
+      this.y = this.centre.y + Math.sin(this.radians) * 30
+
     } else {
-      this.x = this.x + this.velocity.x
-      this.y = this.y + this.velocity.y
+      this.x += this.velocity.x
+      this.y += this.velocity.y
     }
   }
 }
 
-export class Particle {
+const friction = 0.99
+
+class Particle {
   constructor(x, y, radius, colour, velocity) {
     this.x = x
     this.y = y
@@ -151,6 +144,7 @@ export class Particle {
     this.velocity = velocity
     this.alpha = 1
   }
+
   draw() {
     ctx.save()
     ctx.globalAlpha = this.alpha 
@@ -160,23 +154,25 @@ export class Particle {
     ctx.fill()
     ctx.restore()
   }
+
   update() {
     this.draw()
     this.velocity.x *= friction
     this.velocity.y *= friction
-    this.x = this.x + this.velocity.x
-    this.y = this.y + this.velocity.y
+    this.x += this.velocity.x
+    this.y += this.velocity.y
     this.alpha -= 0.01
   }
 }
 
-export class BackgroundParticle {
-  constructor(position, radius = 3, colour = 'red') {
+class BackgroundParticle {
+  constructor({ position, radius = 3, colour = 'red' }) {
     this.position = position
     this.radius = radius
     this.colour = colour
     this.alpha = 0.1
   }
+
   draw() {
     ctx.save()
     ctx.globalAlpha = this.alpha 
@@ -186,54 +182,52 @@ export class BackgroundParticle {
     ctx.fill()
     ctx.restore()
   }
-} 
+}
 
+let spawnPowerUpsId
 
-export class PowerUp {
-  constructor(
-    position = {
-      x: 0,
-      y: 0
-    },
-    velocity
-  ) {
+class PowerUp {
+  constructor({
+    position = { x: 0, y: 0 },
+    velocity = { x: 0, y: 0 }
+  }) {
     this.position = position
     this.velocity = velocity
+    this.image = new Image()
     this.image.src = '../assets/images/lightningBolt.png'
     this.alpha = 1
+    this.radians = 0
 
-    gsap.to(
-      this,
-      {
-        alpha: 0,
-        duration: 0.2,
-        repeat: -1,
-        yoyo: true,
-        ease: 'linear'
-      }
-    )
-
-    this.radians
+    gsap.to(this, {
+      alpha: 0,
+      duration: 0.2,
+      repeat: -1,
+      yoyo: true,
+      ease: 'linear'
+    })
   }
 
   draw() {
     ctx.save()
-    ctx.globalAlpha = this.alpha 
+    ctx.globalAlpha = this.alpha
     ctx.translate(
       this.position.x + this.image.width / 2,
-      this.position.y + this.image.height / 2,
+      this.position.y + this.image.height / 2
     )
     ctx.rotate(this.radians)
     ctx.translate(
       -this.position.x - this.image.width / 2,
-      -this.position.y - this.image.height / 2,
+      -this.position.y - this.image.height / 2
     )
     ctx.drawImage(this.image, this.position.x, this.position.y)
     ctx.restore()
   }
+
   update() {
     this.draw()
     this.radians += 0.01
     this.position.x += this.velocity.x
+    this.position.y += this.velocity.y
   }
-} 
+}
+

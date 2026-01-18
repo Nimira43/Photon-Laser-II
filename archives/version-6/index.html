@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="icon" href="./assets/images/TheFavicon.png">
+  <link rel="stylesheet" href="assets/styles/styles.css">
+  <title>Photon Laser II</title>
+</head>
+<body>
+  
+  <div class="score-wrapper">
+    <span>Score: 
+      <span id="score-el">0</span>
+    </span>
+  </div>
+
+  <div class="volume-wrapper">
+    <i 
+      id="volume-up-el" 
+      class="fa-solid fa-volume-high"
+    ></i>
+    <i 
+      id="volume-off-el" 
+      class="fa-solid fa-volume-low" style="display:none;"
+    ></i>
+  </div>
+
+  
+  <div id="modal-el">
+    <label class="game-over">You Are Dead</label>
+    <h1 id="modal-score-el">0</h1>
+    <p class="points">Points</p>
+    <button id="button-el">Try Again?</button>
+  </div>
+
+  <div id="start-modal-el">
+    <h1 class="title">Photon Laser II</h1>
+    <button id="start-button-el">Start</button>
+  </div>
+
+  <canvas></canvas>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"
+    integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="./js/audio.js"></script>  
+  <script src="./js/classes.js"></script>  
+  <script src="./index.js"></script>  
+  <!-- <script src="index.js" type="module"></script> -->
+  
+</body>
+</html>

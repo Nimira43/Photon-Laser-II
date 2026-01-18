@@ -1,4 +1,4 @@
-export const audio = {
+const audio = {
   shoot: new Howl({
     src: '../assets/audio/shoot.wav',
     volume: 0.04

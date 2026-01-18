@@ -19,9 +19,16 @@
   </div>
 
   <div class="volume-wrapper">
-    <i class="fa-solid fa-volume-high"></i>
-    <i class="fa-solid fa-volume-low"></i>
+    <i 
+      id="volume-up-el" 
+      class="fa-solid fa-volume-high"
+    ></i>
+    <i 
+      id="volume-off-el" 
+      class="fa-solid fa-volume-low" style="display:none;"
+    ></i>
   </div>
+
   
   <div id="modal-el">
     <label class="game-over">You Are Dead</label>
@@ -37,10 +44,17 @@
 
   <canvas></canvas>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"
+    integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
     integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="index.js" type="module"></script>
+
+  <script src="./js/audio.js"></script>  
+  <script src="./js/classes.js"></script>  
+  <script src="./index.js"></script>  
+  <!-- <script src="index.js" type="module"></script> -->
   
 </body>
 </html>
