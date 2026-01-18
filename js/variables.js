@@ -7,3 +7,4 @@ export const buttonEl = document.querySelector('#button-el')
 export const startButtonEl = document.querySelector('#start-button-el')
 export const startModalEl = document.querySelector('#start-modal-el')
 export const friction = 0.99
+export let player
