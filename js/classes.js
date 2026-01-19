@@ -1,26 +1,29 @@
-class Player {
+import { state } from './variables.js'
+
+const friction = 0.99
+
+export class Player {
   constructor(x, y, radius, colour) {
     this.x = x
     this.y = y
     this.radius = radius
     this.colour = colour
-    this.velocity = {
-      x: 0,
-      y: 0
-    }
+    this.velocity = { x: 0, y: 0 }
     this.powerUp = null
   }
-  
+
   draw() {
+    const ctx = state.render.ctx
     ctx.beginPath()
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
     ctx.fillStyle = this.colour
     ctx.fill()
   }
 
   update() {
+    const canvas = state.render.canvas
     this.draw()
-    const friction = 0.99
+
     this.velocity.x *= friction
     this.velocity.y *= friction
 
@@ -29,22 +32,18 @@ class Player {
       this.x - this.radius + this.velocity.x >= 0
     ) {
       this.x += this.velocity.x
-    } else {
-      this.velocity.x = 0
-    }
-    
+    } else this.velocity.x = 0
+
     if (
       this.y + this.radius + this.velocity.y <= canvas.height &&
       this.y - this.radius + this.velocity.y >= 0
     ) {
       this.y += this.velocity.y
-    } else {
-      this.velocity.y = 0
-    }
-  } 
+    } else this.velocity.y = 0
+  }
 }
 
-class Projectile {
+export class Projectile {
   constructor(x, y, radius, colour, velocity) {
     this.x = x
     this.y = y
@@ -54,8 +53,9 @@ class Projectile {
   }
 
   draw() {
+    const ctx = state.render.ctx
     ctx.beginPath()
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
     ctx.fillStyle = this.colour
     ctx.fill()
   }
@@ -67,7 +67,7 @@ class Projectile {
   }
 }
 
-class Enemy {
+export class Enemy {
   constructor(x, y, radius, colour, velocity) {
     this.x = x
     this.y = y
@@ -85,25 +85,26 @@ class Enemy {
         if (Math.random() < 0.5) {
           this.type = 'Homing Spinning'
         }
-      }  
+      }
     }
   }
 
   draw() {
+    const ctx = state.render.ctx
     ctx.beginPath()
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
     ctx.fillStyle = this.colour
     ctx.fill()
   }
 
   update() {
+    const player = state.game.player
     this.draw()
 
     if (this.type === 'Spinning') {
       this.radians += 0.1
       this.centre.x += this.velocity.x
       this.centre.y += this.velocity.y
-
       this.x = this.centre.x + Math.cos(this.radians) * 30
       this.y = this.centre.y + Math.sin(this.radians) * 30
 
@@ -116,13 +117,11 @@ class Enemy {
 
     } else if (this.type === 'Homing Spinning') {
       this.radians += 0.1
-
       const angle = Math.atan2(player.y - this.centre.y, player.x - this.centre.x)
       this.velocity.x = Math.cos(angle)
       this.velocity.y = Math.sin(angle)
       this.centre.x += this.velocity.x
       this.centre.y += this.velocity.y
-
       this.x = this.centre.x + Math.cos(this.radians) * 30
       this.y = this.centre.y + Math.sin(this.radians) * 30
 
@@ -133,9 +132,7 @@ class Enemy {
   }
 }
 
-const friction = 0.99
-
-class Particle {
+export class Particle {
   constructor(x, y, radius, colour, velocity) {
     this.x = x
     this.y = y
@@ -146,10 +143,11 @@ class Particle {
   }
 
   draw() {
+    const ctx = state.render.ctx
     ctx.save()
-    ctx.globalAlpha = this.alpha 
+    ctx.globalAlpha = this.alpha
     ctx.beginPath()
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
     ctx.fillStyle = this.colour
     ctx.fill()
     ctx.restore()
@@ -165,8 +163,8 @@ class Particle {
   }
 }
 
-class BackgroundParticle {
-  constructor({ position, radius = 3, colour = 'red' }) {
+export class BackgroundParticle {
+  constructor({ position, radius = 3, colour = '#8b0000' }) {
     this.position = position
     this.radius = radius
     this.colour = colour
@@ -174,8 +172,9 @@ class BackgroundParticle {
   }
 
   draw() {
+    const ctx = state.render.ctx
     ctx.save()
-    ctx.globalAlpha = this.alpha 
+    ctx.globalAlpha = this.alpha
     ctx.beginPath()
     ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
     ctx.fillStyle = this.colour
@@ -184,13 +183,8 @@ class BackgroundParticle {
   }
 }
 
-let spawnPowerUpsId
-
-class PowerUp {
-  constructor({
-    position = { x: 0, y: 0 },
-    velocity = { x: 0, y: 0 }
-  }) {
+export class PowerUp {
+  constructor({ position, velocity }) {
     this.position = position
     this.velocity = velocity
     this.image = new Image()
@@ -208,6 +202,7 @@ class PowerUp {
   }
 
   draw() {
+    const ctx = state.render.ctx
     ctx.save()
     ctx.globalAlpha = this.alpha
     ctx.translate(
@@ -230,4 +225,5 @@ class PowerUp {
     this.position.y += this.velocity.y
   }
 }
+
 

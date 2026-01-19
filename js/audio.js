@@ -1,4 +1,4 @@
-const audio = {
+export const audio = {
   shoot: new Howl({
     src: '../assets/audio/shoot.wav',
     volume: 0.04
@@ -12,7 +12,7 @@ const audio = {
     volume: 0.1
   }),
   death: new Howl({
-    src: '../assets/audio/death.wav',
+    src: '../assets/audio/death.ogg',
     volume: 0.1
   }),
   powerUpNoise: new Howl({
@@ -20,7 +20,7 @@ const audio = {
     volume: 0.1
   }),
   select: new Howl({
-    src: '../assets/audio/select.wav',
+    src: '../assets/audio/select.ogg',
     volume: 0.1
   }),
   background: new Howl({
